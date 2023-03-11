@@ -32,18 +32,8 @@ bool udpSender::sendData(std::string data)
     return true;
 }
 udpSender::udpSender(std::string address,std::string port){
-    setAddress(checkAddress(address)?address:ADDRESS);
-    setPort(checkPort(port)?port:PORT);
+    setAddress(address);
+    setPort(port);
 }
 
-
-void udpSender::setPort(std::string port){
-    mPort=port;
-    return;
-}
-
-void udpSender::setAddress(std::string address){
-    mAddress=address;
-    return;
-}
 

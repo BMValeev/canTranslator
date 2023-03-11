@@ -7,8 +7,9 @@
 #include "iostream"
 argParser::argParser(int argc, char *argv[])
     :mIsHelp(false)
-    ,mAddress("")
-    ,mPort(""){
+    ,mIsFull(false)
+    ,mAddress(ADDRESS)
+    ,mPort(PORT){
     parse( argc, argv);
     if (isHelp())
         std::cout<<mHelp<<std::endl;
@@ -16,7 +17,7 @@ argParser::argParser(int argc, char *argv[])
 //проходит по всем аргументам и в случае если совпадает с опциями все следующие аргументы
 // до совпадения со следующей опцией будут считаться параметрами. Проверки упростил. Если порт будет указан
 // несколько раз или будет -p 11 12 13, учтется только последнее значение. Решил не усложнять процедуры.
-void argParser::parse(int argc, char *argv[]) {
+void argParser::parse(int argc, char *argv[]){
     std::vector<std::string> parameters;
     std::map<int,std::string> options;
     int currentState(0);
@@ -43,19 +44,20 @@ void argParser::parse(int argc, char *argv[]) {
             checkOption=false;
             continue;
         }
-        parseParameter(currentState,i);
+        parseOption(currentState, i);
     }
 }
 
 
-void argParser::parseParameter(int state,std::string value){
+void argParser::parseOption(int state, std::string value){
     switch (state){
         case 1: if(isCorrectNodeId(value)){
                 mNodeId.push_back(value);
                 std::cout<<"added nodeID: " <<value<<std::endl;
+                mIsFull=true;
             }
             break;
-        case 2: {
+        case 2: if (checkAddress(value)){
             mAddress=value;
             std::cout<<"added address: " <<value<<std::endl;
             break;
@@ -80,7 +82,7 @@ bool argParser::isCorrectNodeId(std::string const& value){ //пока не сд�
 
 bool argParser::checkPort(std::string port){
     int val=std::stoi(port);
-    return ((val>10000) && (val <100000));
+    return ((val>std::stoi(MINPORT)) && (val <std::stoi(MAXPORT)));
 }
 
 bool argParser::checkAddress(std::string address){

@@ -6,18 +6,21 @@
 #define CANTRANSLATOR_UDPSENDER_H
 #include "string"
 //Этот класс осуществляет отправку данных через udp строк.
-// Класс принимает на вход порт и адрес, проверяет их на корректность
+// Класс принимает на вход порт и адрес, не проверяет их на корректность
 // никаких действий со строкой не производит.
-#define ADDRESS "127.0.0.1"
-#define PORT "5555"
+// По хорошему нужно дублировать проверки для переиспользования кода в случае если он будет использован в дальнейшем.
+//Но на текущий момент я разместил проверяющую логику в обработку входных параметров и контролирующий класс
 class udpSender {
 
 public:
-    explicit udpSender(std::string address=ADDRESS,std::string port=PORT);
+    explicit udpSender(std::string address,std::string port);
     ~udpSender()=default;
-    void setPort(std::string address);  //устанавливает значение порта. принимает строку. не проверяет на корректность.
-    void setAddress(std::string port);  //устанавливает значение IP адреса. принимает строку. не проверяет на корректность
-    bool sendData(std::string data); //отправить данные. В случае ошибки выдает false
+    //устанавливает значение порта. принимает строку. не проверяет на корректность.
+    void setPort(std::string address) { mAddress=address;}
+    //устанавливает значение IP адреса. принимает строку. не проверяет на корректность
+    void setAddress(std::string port) { mPort=port;}
+    //отправить данные. В случае ошибки выдает false
+    bool sendData(std::string data);
 
 protected:
     std::string getAddress()    { return mAddress; } //возвращает значение IP адреса в формате строки без проверок.

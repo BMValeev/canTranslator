@@ -9,6 +9,8 @@ int main(int argc, char *argv[]) {
     argParser arguments=argParser( argc, argv);
     if(arguments.isHelp())
         return 0;
+    if(!arguments.isFull())
+        return 0;
     std::cout << "Hello, World!" << std::endl;
     return 0;
 }
