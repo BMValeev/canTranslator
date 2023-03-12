@@ -6,14 +6,21 @@
 #define CANTRANSLATOR_PROCESSCONTROLLER_H
 #include "string"
 #include "vector"
+#include "iostream"
+#include "canString.h"
+#include "udpSender.h"
 
 class processController {
 public:
     explicit processController(std::string port, std::string address,std::vector<std::string> nodes);
     ~processController() =default;
+    void parseSaved();
+    void saveToFile();
     bool process();
+    bool sendData(const std::string &value);
 private:
-    std::string mAddress, mPort;
+    udpSender sender;
+    bool checkAddress(canString value);
     std::vector<std::string> mNodeId;
 };
 

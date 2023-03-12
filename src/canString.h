@@ -9,6 +9,7 @@
 #include "string"
 #include "map"
 #include "vector"
+#include "iostream"
 class canString {
 public:
     explicit canString(const std::string &data);
@@ -16,16 +17,19 @@ public:
     std::string getString()     {   return mBaseline;   }
     std::string getAddress()    {   return mNodeId;     } //возвращает значение  адреса в формате строки без проверок.
     bool isCorrect()            {   return mCorrect;    }
+    void printAll()   { for(auto i: parameters) std::cout <<i.first <<"____" << i.second <<std::endl; };
 protected:
     //Распарсить параметры в строке по типу данных и провести базовую проверку
     bool parse();
-    /*bool checkAddress(std::vector<std::string> address);*/
+
 
 private:
     //сохранить адрес получателя в формате в котором будет происходить проверка
     bool parseNodeId(const std::string &value );
     //Парсинг строки по конкретному параметру и фильтрация по символам, для упрощения чтения кода
     bool findParameter(std::string* value,const std::string & name,const std::string &startSymbol=" ",const std::string &endSymbol=" ");
+    // вывод распарсен ли параметр или нет
+    bool printOut(const std::string &node, const bool result);
     std::string mBaseline;
     std::string mNodeId;
     bool mCorrect;
