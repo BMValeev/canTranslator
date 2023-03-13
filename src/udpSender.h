@@ -16,15 +16,15 @@ public:
     explicit udpSender(std::string address,std::string port);
     ~udpSender()=default;
     //устанавливает значение порта. принимает строку. не проверяет на корректность.
-    void setPort(std::string address) { mAddress=address;}
+    void setPort(std::string port) { mPort=port; }
     //устанавливает значение IP адреса. принимает строку. не проверяет на корректность
-    void setAddress(std::string port) { mPort=port;}
+    void setAddress(std::string address) { mAddress=address;}
     //отправить данные. В случае ошибки выдает false
     bool sendData(std::string data);
-
-protected:
-    std::string getAddress()    { return mAddress; } //возвращает значение IP адреса в формате строки без проверок.
-    std::string getPort()   { return mPort; }       //возвращает значение порта в формате строки без проверок.
+    //возвращает значение IP адреса в формате строки без проверок.
+    std::string getAddress()    { return mAddress; }
+    //возвращает значение порта в формате строки без проверок.
+    std::string getPort()   { return mPort; }
 
 private:
     std::string mAddress,mPort;
