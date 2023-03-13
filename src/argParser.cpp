@@ -6,7 +6,11 @@
 #include "map"
 #include "iostream"
 #include <algorithm>
-
+#ifndef WIN32
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#endif
 argParser::argParser(int argc, char *argv[])
     :mIsHelp(false)
     ,mIsFull(false)

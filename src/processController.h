@@ -11,7 +11,7 @@
 #include "udpSender.h"
 #include "dataLoader.h"
 
-#define FILEPATH "SOMEFILEPATH"
+#define FILEPATH "log.txt"
 
 class processController {
 public:

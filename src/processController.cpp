@@ -30,6 +30,8 @@ bool processController::process(){
             dataToParse.push_back(input);
     }
 }
+//В случае если данные не отправлены, сделал отладочное сообщение что сохранено сообщенеи на диск.
+
 bool processController::sendData(const std::string &value){
     canString dataToSend(value);
     if(!dataToSend.isCorrect())
@@ -37,17 +39,22 @@ bool processController::sendData(const std::string &value){
     if(!checkAddress(dataToSend))
         return false;
     if(!mSender.sendData(value)){
+        std::cout<<"not send, write to disk"<<std::endl;
         saveToFile(value);
         return false;
     }
     return true;
 }
+// Метод для  считывания сохраненных строк из файла
+//Очиащет файл после считывания
+// Есди файл не существует то не пытаться считывать его
 void processController::loadFromFile(){
-    if (mLoader.isCorrect())
+    if (!mLoader.isCorrect())
         return;
     std::vector<std::string> loadedData= mLoader.readFromFile();
     mLoader.clearFile();
     for (auto i :loadedData){
+        std::cout<<i<<std::endl;
         sendData(i);
     }
     return;

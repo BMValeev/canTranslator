@@ -6,11 +6,15 @@
 #include <sys/types.h>
 #include <iostream>
 #include <vector>
-//#include <arpa/inet.h>
-//#include <netinet/in.h>
-//#include <sys/socket.h>
-
-
+#include <stdio.h>
+#include "unistd.h"
+#include "stdlib.h"
+#ifndef WIN32
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#endif
+//Не сильно тестировал если честно на правильность работы
 bool udpSender::sendData(std::string data)
 {
 #ifndef WIN32
@@ -18,9 +22,8 @@ bool udpSender::sendData(std::string data)
     struct sockaddr_in addr;
 
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(getPort().c_str());
+    addr.sin_port = htons(std::stoi(getPort().c_str()));
     addr.sin_addr.s_addr = inet_addr(getAddress().c_str());
-
     sock = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
     if ((sock < 0)
         || (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
