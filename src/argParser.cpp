@@ -5,6 +5,8 @@
 #include "argParser.h"
 #include "map"
 #include "iostream"
+#include <algorithm>
+
 argParser::argParser(int argc, char *argv[])
     :mIsHelp(false)
     ,mIsFull(false)
@@ -52,6 +54,7 @@ void argParser::parse(int argc, char *argv[]){
 void argParser::parseOption(int state, std::string value){
     switch (state){
         case 1: if(isCorrectNodeId(value)){
+                std::transform(value.begin()+2, value.end(),value.begin()+2, ::toupper);
                 mNodeId.push_back(value);
                 std::cout<<"added nodeID: " <<value<<std::endl;
                 mIsFull=true;

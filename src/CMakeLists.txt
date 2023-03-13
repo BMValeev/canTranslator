@@ -14,15 +14,13 @@ list(APPEND DIRECTORIES_CAN
 set(SOURCE_FILES_CAN
         canString.cpp
         processController.cpp
-        stringReader.cpp
         udpSender.cpp
-
-        dataLoader.cpp dataLoader.h argParser.cpp argParser.h)
+        dataLoader.cpp
+        argParser.cpp
+        )
 
 add_library(${PROJECT_NAME}        ${SOURCE_FILES_CAN}   )
 
-#add_subdirectory(videofiles)
-#add_subdirectory(comcpp)
 
 include_directories(${DIRECTORIES_CAN})
 link_directories(${DIRECTORIES_CAN})

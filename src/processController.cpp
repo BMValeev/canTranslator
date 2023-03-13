@@ -3,18 +3,24 @@
 //
 
 #include "processController.h"
+// конструктор класса, принимает адрес, порт и адреса которые надо проспускать.
+// кроме этого создает класс для записи на диск. Но я не стал заморачиваться и опредлил путь файла через define
 processController::processController(std::string port, std::string address,std::vector<std::string> nodes)
-    :mNodeId(nodes)
-    ,sender(address,port)
+    : mNodeId(nodes)
+    , mSender(address, port)
+    , mLoader(FILEPATH)
     {
 
 }
+// Основной метод в котором происходит прием данных. Сделал через cin построчный ввод данных,
+// то есть обработка происходит в момент когда приходит конец строки, на EOF не тестировал
 bool processController::process(){
     char input;
     std::string dataToParse;
     while(true){
-        std::cin>>input;
+        std::cin >>std::noskipws >>input;
         if(input=='\n'){
+            //std::cout<<"value"<<std::endl;
             sendData(dataToParse);
             dataToParse.clear();
         }
@@ -30,14 +36,28 @@ bool processController::sendData(const std::string &value){
         return false;
     if(!checkAddress(dataToSend))
         return false;
-    if(!sender.sendData(value)){
-        saveToFile();
+    if(!mSender.sendData(value)){
+        saveToFile(value);
         return false;
     }
+    return true;
 }
-void processController::saveToFile(){
+void processController::loadFromFile(){
+    if (mLoader.isCorrect())
+        return;
+    std::vector<std::string> loadedData= mLoader.readFromFile();
+    mLoader.clearFile();
+    for (auto i :loadedData){
+        sendData(i);
+    }
+    return;
+}
 
+void processController::saveToFile(const std::string &value){
+    mLoader.writeToFile(value);
 }
+//Процедура проверки адреса на совпадение.
+
 bool processController::checkAddress(canString value){
     if (!value.isCorrect())
         return false;
