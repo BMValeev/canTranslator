@@ -25,10 +25,6 @@ add_executable(${PROJECT_NAME}      ${SOURCE_FILES_TR}          )
 
 target_link_libraries (${PROJECT_NAME} PUBLIC  ${LIBRARIES_TR}  )
 
-#install(TARGETS ${PROJECT_NAME}
-#        RUNTIME DESTINATION bin
-#        LIBRARY DESTINATION lib
-#        ARCHIVE DESTINATION lib/static)
 
 
 
